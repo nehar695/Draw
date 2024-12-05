@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Collaborative Drawing</title>
     <style>
-        /* Basic Reset */
         body, html {
             margin: 0;
             padding: 0;
@@ -65,8 +64,10 @@
         // Save the drawing to Firebase
         function saveDrawing(x1, y1, x2, y2, color, size) {
             const drawingData = {
-                x1, y1, x2, y2, color, size
+                x1, y1, x2, y2, color, size,
+                timestamp: Date.now() // Add timestamp for ordering
             };
+            // Save drawing data to Firebase
             database.ref('drawings').push(drawingData);
         }
 
@@ -112,13 +113,16 @@
         // Fetch the drawing data from Firebase and draw it on all users' canvases
         database.ref('drawings').on('child_added', function(snapshot) {
             const data = snapshot.val();
-            ctx.beginPath();
-            ctx.moveTo(data.x1, data.y1);
-            ctx.lineTo(data.x2, data.y2);
-            ctx.strokeStyle = data.color;
-            ctx.lineWidth = data.size;
-            ctx.lineCap = 'round';
-            ctx.stroke();
+            if (data && data.x1 !== undefined && data.y1 !== undefined && data.x2 !== undefined && data.y2 !== undefined) {
+                // Draw the fetched data on the canvas
+                ctx.beginPath();
+                ctx.moveTo(data.x1, data.y1);
+                ctx.lineTo(data.x2, data.y2);
+                ctx.strokeStyle = data.color;
+                ctx.lineWidth = data.size;
+                ctx.lineCap = 'round';
+                ctx.stroke();
+            }
         });
     </script>
 </body>
