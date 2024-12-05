@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collaborative Drawing</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="canvas-container">
+        <div class="toolbar">
+            <div class="color-picker">
+                <div style="background-color: red;" onclick="changeColor('red')"></div>
+                <div style="background-color: green;" onclick="changeColor('green')"></div>
+                <div style="background-color: blue;" onclick="changeColor('blue')"></div>
+                <div style="background-color: yellow;" onclick="changeColor('yellow')"></div>
+                <div style="background-color: black;" onclick="changeColor('black')"></div>
+            </div>
+            <p>Scroll the canvas and draw!</p>
+        </div>
+        <canvas id="drawingCanvas" width="10000" height="10000"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/firebase@9.1.2/firebase-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/firebase@9.1.2/firebase-database.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
