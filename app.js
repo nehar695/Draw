@@ -24,6 +24,10 @@ const drawingsRef = ref(db, 'drawings');
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
+// Set the background color of the canvas to white
+ctx.fillStyle = 'white'; 
+ctx.fillRect(0, 0, canvas.width, canvas.height); // Fill the canvas with white color
+
 // Function to save drawing data to Firebase
 function saveDrawingData(x, y, color) {
   const newDrawingRef = push(drawingsRef);
