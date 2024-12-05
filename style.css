@@ -1,0 +1,43 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+}
+
+#canvas-container {
+    position: relative;
+    overflow: scroll;
+}
+
+canvas {
+    border: 1px solid black;
+    cursor: crosshair;
+}
+
+.toolbar {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 10;
+    background-color: white;
+    padding: 10px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.color-picker {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.color-picker div {
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+    border-radius: 50%;
+    cursor: pointer;
+}
