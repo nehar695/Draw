@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shared Drawing Canvas</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        canvas {
+            border: 2px solid #000;
+            background: #fff;
+            cursor: crosshair;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="drawingCanvas"></canvas>
+
+    <script src="https://cdn.socket.io/4.7.1/socket.io.min.js"></script>
+    <script>
+        const canvas = document.getElementById('drawingCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Socket.IO setup
+        const socket = io();
+
+        // Resize canvas to fit the screen
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Drawing variables
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+        let color = '#000';
+
+        // Start drawing
+        canvas.addEventListener('mousedown', (e) => {
+            isDrawing = true;
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+        });
+
+        // Drawing movement
+        canvas.addEventListener('mousemove', (e) => {
+            if (!isDrawing) return;
+
+            const data = {
+                x: e.offsetX,
+                y: e.offsetY,
+                lastX,
+                lastY,
+                color,
+            };
+
+            socket.emit('draw', data); // Send drawing data to server
+            draw(data);
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+        });
+
+        // Stop drawing
+        canvas.addEventListener('mouseup', () => (isDrawing = false));
+        canvas.addEventListener('mouseout', () => (isDrawing = false));
+
+        // Draw function
+        function draw({ x, y, lastX, lastY, color }) {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 5;
+            ctx.lineJoin = 'round';
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(x, y);
+            ctx.stroke();
+        }
+
+        // Listen for drawing events from the server
+        socket.on('draw', (data) => {
+            draw(data);
+        });
+    </script>
+</body>
+</html>
