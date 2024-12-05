@@ -1,13 +1,7 @@
-body, html {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    height: 100%;
-    background-color: white;
-}
 canvas {
     position: absolute;
     top: 0;
     left: 0;
-    cursor: crosshair;
+    cursor: crosshair;  /* Ensure the cursor is set */
+    border: 1px solid black;  /* Temporary for visibility */
 }
