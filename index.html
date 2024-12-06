@@ -25,7 +25,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
 
     <script>
-        // Firebase configuration
+        // Your Firebase configuration (using your provided credentials)
         const firebaseConfig = {
             apiKey: "AIzaSyDdf3kFzWrNkTq9bp0gzYYQJz8opFjksLE",
             authDomain: "sample-firebase-ai-app-525fc.firebaseapp.com",
@@ -46,14 +46,14 @@
         let drawing = false;
         let lastX = 0;
         let lastY = 0;
-        let color = 'black';
-        let size = 5;
+        let color = 'black';  // Default color
+        let size = 5;         // Default size
 
         // Resize the canvas to full screen
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        // Listen for mouse events to draw
+        // Mouse event listeners for drawing
         canvas.addEventListener('mousedown', (e) => {
             drawing = true;
             lastX = e.offsetX;
@@ -66,7 +66,7 @@
             const x = e.offsetX;
             const y = e.offsetY;
 
-            // Draw on the canvas
+            // Draw the line on canvas
             ctx.beginPath();
             ctx.moveTo(lastX, lastY);
             ctx.lineTo(x, y);
@@ -75,7 +75,7 @@
             ctx.lineCap = 'round';
             ctx.stroke();
 
-            // Save drawing data to Firebase
+            // Save the drawing to Firebase
             saveDrawing(lastX, lastY, x, y, color, size);
 
             lastX = x;
@@ -86,16 +86,17 @@
             drawing = false;
         });
 
-        // Save drawing data to Firebase
+        // Function to save drawing data to Firebase
         function saveDrawing(x1, y1, x2, y2, color, size) {
             const drawingData = { x1, y1, x2, y2, color, size };
             database.ref('drawings').push(drawingData);
         }
 
-        // Listen for new drawings from Firebase
+        // Listen for new drawings from Firebase (to sync in real-time)
         database.ref('drawings').on('child_added', (snapshot) => {
             const data = snapshot.val();
             if (data) {
+                // Draw the line from Firebase data
                 ctx.beginPath();
                 ctx.moveTo(data.x1, data.y1);
                 ctx.lineTo(data.x2, data.y2);
