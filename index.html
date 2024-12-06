@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Canvas Drawing</title>
+    <title>Drawing Canvas</title>
     <style>
         body {
             margin: 0;
@@ -14,18 +14,21 @@
             position: absolute;
             top: 0;
             left: 0;
+            cursor: crosshair;
         }
     </style>
 </head>
 <body>
+
+    <!-- Canvas for drawing -->
     <canvas id="canvas"></canvas>
 
-    <!-- Firebase CDN: These links load the necessary Firebase SDK directly in the browser. No npm required. -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
 
     <script>
-        // Firebase Configuration (use your project credentials)
+        // Firebase configuration (use your actual Firebase configuration here)
         const firebaseConfig = {
             apiKey: "AIzaSyDdf3kFzWrNkTq9bp0gzYYQJz8opFjksLE",
             authDomain: "sample-firebase-ai-app-525fc.firebaseapp.com",
@@ -109,5 +112,6 @@
             }
         });
     </script>
+
 </body>
 </html>
