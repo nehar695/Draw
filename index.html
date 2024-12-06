@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drawing Canvas</title>
+    <title>Canvas Drawing</title>
     <style>
         body {
             margin: 0;
@@ -20,12 +20,12 @@
 <body>
     <canvas id="canvas"></canvas>
 
-    <!-- Firebase SDK -->
+    <!-- Firebase CDN: These links load the necessary Firebase SDK directly in the browser. No npm required. -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
 
     <script>
-        // Firebase configuration
+        // Firebase Configuration (use your project credentials)
         const firebaseConfig = {
             apiKey: "AIzaSyDdf3kFzWrNkTq9bp0gzYYQJz8opFjksLE",
             authDomain: "sample-firebase-ai-app-525fc.firebaseapp.com",
@@ -40,7 +40,7 @@
         const app = firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        // Canvas Setup
+        // Setup canvas
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         let drawing = false;
@@ -53,7 +53,7 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        // Listen for mouse events to draw
+        // Mouse events to draw
         canvas.addEventListener('mousedown', (e) => {
             drawing = true;
             lastX = e.offsetX;
@@ -66,7 +66,7 @@
             const x = e.offsetX;
             const y = e.offsetY;
 
-            // Draw the line on canvas
+            // Draw the line on the canvas
             ctx.beginPath();
             ctx.moveTo(lastX, lastY);
             ctx.lineTo(x, y);
@@ -86,20 +86,19 @@
             drawing = false;
         });
 
-        // Save drawing data to Firebase
+        // Save the drawing to Firebase
         function saveDrawing(x1, y1, x2, y2, color, size) {
             const drawingData = { x1, y1, x2, y2, color, size };
 
             database.ref('drawings').push(drawingData)
-                .then(() => console.log('Data saved successfully!'))
-                .catch((error) => console.error('Error saving data to Firebase:', error));
+                .then(() => console.log('Drawing saved to Firebase!'))
+                .catch((error) => console.error('Error saving drawing to Firebase:', error));
         }
 
-        // Listen for new drawings from Firebase (to sync in real-time)
+        // Listen for new drawings from Firebase (real-time sync)
         database.ref('drawings').on('child_added', (snapshot) => {
             const data = snapshot.val();
             if (data) {
-                // Draw the line from Firebase data
                 ctx.beginPath();
                 ctx.moveTo(data.x1, data.y1);
                 ctx.lineTo(data.x2, data.y2);
