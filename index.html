@@ -25,7 +25,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
 
     <script>
-        // Your Firebase configuration (using your provided credentials)
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDdf3kFzWrNkTq9bp0gzYYQJz8opFjksLE",
             authDomain: "sample-firebase-ai-app-525fc.firebaseapp.com",
@@ -46,14 +46,14 @@
         let drawing = false;
         let lastX = 0;
         let lastY = 0;
-        let color = 'black';  // Default color
-        let size = 5;         // Default size
+        let color = 'black';
+        let size = 5;
 
         // Resize the canvas to full screen
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        // Mouse event listeners for drawing
+        // Listen for mouse events to draw
         canvas.addEventListener('mousedown', (e) => {
             drawing = true;
             lastX = e.offsetX;
@@ -86,10 +86,13 @@
             drawing = false;
         });
 
-        // Function to save drawing data to Firebase
+        // Save drawing data to Firebase
         function saveDrawing(x1, y1, x2, y2, color, size) {
             const drawingData = { x1, y1, x2, y2, color, size };
-            database.ref('drawings').push(drawingData);
+
+            database.ref('drawings').push(drawingData)
+                .then(() => console.log('Data saved successfully!'))
+                .catch((error) => console.error('Error saving data to Firebase:', error));
         }
 
         // Listen for new drawings from Firebase (to sync in real-time)
